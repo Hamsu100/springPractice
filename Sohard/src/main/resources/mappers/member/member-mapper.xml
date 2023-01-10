@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memberMapper">
+<resultMap type="Member" id="memberResultMap">
+<!-- idNo : ~, id : ~, password : ~, status :~ -->
+	<result property="password" column="pwd"/>
+</resultMap> 
+<!-- 
+SQL이 실행되고 결과값이 오자나
+결과값을 primitive reference Type
+ -->
+<select id="selectById" parameterType="string" resultMap="memberResultMap">
+	select * from board.member where id = #{id}
+</select>
+<select id="selectLast" resultType="int">
+	select idNo from board.member order by 1 desc limit 1
+</select>
+<insert id="insertMember" parameterType="Member">
+	insert into board.member values (#{idNo}, #{id}, #{password}, default)
+</insert>
+
+<update id="updateMember" parameterType="Member">
+	update board.member set pwd = #{password} where idNo = #{idNo}
+</update>
+</mapper>
+

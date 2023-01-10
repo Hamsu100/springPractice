@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="boardMapper">
+<!-- board resultmap -->
+<resultMap type="Board" id="boardResultMap">
+<!-- idNo : ~, id : ~, password : ~, status :~ -->
+	<result property="bNo" column="bNo"/>
+	<result property="title" column="title"/>
+	<result property="content" column="content"/>
+	<result property="crtDate" column="date"/>
+	<result property="ori" column="ori"/>
+	<result property="ren" column="ren"/>
+	<result property="userId" column="id"/>
+</resultMap>
+<!-- reply resultmap --> 
+<resultMap type="Reply" id="replyResultMap">
+	<result property="rNo" column="rNo"/>
+	<result property="bNo" column="boardNo"/>
+	<result property="content" column="content"/>
+	<result property="crtDate" column="date"/>
+	<result property="userId" column="id"/>
+</resultMap>
+<!-- 
+SQL이 실행되고 결과값이 오자나
+결과값을 primitive reference Type
+ -->
+ 
+ <!-- select -->
+ <select id="selectBoardCnt" parameterType="map" resultType="int">
+ 	select count(*) 
+ 	from board.bbs as b
+ 	join board.member as m on m.uNo = b.uNo  	
+ 	where
+ 		1=1
+ 	<if test="writer != null">
+ 		m.id like '%'||#{writer}||'%'
+ 	</if>
+ 	<if test="content != null">
+ 		b.content like '%'||#{content}||'%'
+ 	</if>
+ 	<if test="title != null">
+ 		b.title like '%'||#{title}||'%'
+ 	</if>
+ </select>
+ <select id="selectBoardList" parameterType="map" resultMap="Board">
+ 	select 
+ 	*
+ 	from
+	 	(select
+	 		b.bNo, b.title, b.content,
+	 		b.date, b.ori, b.ren,
+	 		m.id, rowNum as rNum
+	 	from
+	 		board.bbs b
+	 	join
+	 		board.member m on (m.idNo = b.uNo))
+ 	where
+ 		
+ 	order by
+ 		b.bNo asc
+ </select>
+</mapper>
+
