@@ -24,6 +24,7 @@ public class BoardController {
 		// 1. 전체 리스트 갯수
 		// 2. 검색어 있으면 검색어 매핑
 		// 3. 게시판 리스트 가져오기 + Paging 처리
+		// Connect With Polarion
 		
 		int page = 1;
 		
